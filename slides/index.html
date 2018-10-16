@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- SEO -->
+    <title>Do REST ao GraphQL</title>
+    <meta name="description" content="O que é GraphQL? Como pode ser comparado ao REST? Quais os pontos positivos e negativos? Essa apresentação fará uma introdução ao assunto, misturando a teoria e a prática.">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,700,700i%7CMaitree:200,300,400,600,700&amp;subset=latin-ext" rel="stylesheet">
+
+    <!-- CSS WebSlides -->
+    <link rel="stylesheet" type='text/css' media='all' href="static/css/webslides.css">
+
+    <!-- Optional - CSS SVG Icons (Font Awesome) -->
+    <link rel="stylesheet" type='text/css' media='all' href="static/css/svg-icons.css">
+
+    <!-- Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#333333">
+
+    <!-- ASCIINEMA Player -->
+    <link rel="stylesheet" type="text/css" href="static/css/asciinema-player.css">
+
+    <style type="text/css">
+      section.asciinema {
+        background-color: #121314;
+        padding: 0 !important;
+      }
+
+      .asciinema-theme-asciinema .asciinema-terminal {
+        width: 100% !important;
+      }
+
+      .asciinema-player-wrapper .asciinema-player {
+        width: 100%;
+      }
+
+      .asciinema-terminal .line {
+        height: auto;
+        width: 100%;
+      }
+
+      .asciinema-terminal .line span {
+        height: auto;
+        width: auto;
+        word-wrap: break-word;
+      }
+    </style>
+  </head>
+  <body>
+    <main role="main">
+      <article id="webslides" class="vertical">
+
+        <section class="bg-black slide-top">
+          <span class="background" style="background-image:url('https://source.unsplash.com/RymM9fOusVg/'); opacity: 0.5;"></span>
+          <div class="wrap aligncenter">
+            <figure><img src="https://www.conexaokinghost.com.br/wp-content/uploads/2018/08/logo-conexao-kinghost.png" style="padding-bottom: 100px;" /></figure>
+            <h2 class="text-landing" style="text-shadow: none;"><span style="background-color: #f4bc0e; padding-left: 15px;">Do REST ao GraphQL</span></h2>
+            <p class="text-intro" style="text-shadow: none;">Gabriel Couto, CTO da Memed</p>
+          </div>
+        </section>
+
+        <section class="aligncenter">
+          <div class="wrap">
+            <h2>Essa apresentação é <strong>Open Source <svg class="fa-heart"><use xlink:href="#fa-heart"></use></svg></strong></h2>
+            <h3>Sinta-se livre para baixá-la, modificá-la e distribuí-la</h3>
+            <h4><a href="https://github.com/gabrielrcouto/presentation-from-rest-to-graphql" target="_blank" style="color: black;"><svg class="fa-github"><use xlink:href="#fa-github"></use></svg> gabrielrcouto/presentation-from-rest-to-graphql</a></h4>
+          </div>
+        </section>
+
+        <section class="aligncenter">
+          <div class="wrap">
+            <h2><strong>História</strong></h2>
+            <h3>Como o GraphQL foi criado?</h3>
+          </div>
+        </section>
+
+        <section class="aligncenter">
+          <span class="background-right-top" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Facebook_logo_%28square%29.png/600px-Facebook_logo_%28square%29.png'); background-size: 200px"></span>
+          <div class="wrap">
+            <h1 class="text-landing">2012</h1>
+            <p class="text-intro">O time do Facebook precisava de uma API do o News Feed para o novo aplicativo nativo mobile.<br>A API antiga respondia em HTML.</p>
+          </div>
+        </section>
+
+        <section class="aligncenter">
+          <span class="background" style="background-image:url('https://source.unsplash.com/mTkXSSScrzw/');"></span>
+          <div class="wrap">
+            <h1 class="text-landing">REST</h1>
+            <p class="text-intro">Pergunte por um recurso, <br>mas a resposta é como um pacote</p>
+          </div>
+        </section>
+
+        <section class="bg-black slide-top aligncenter">
+          <span class="background" style="background-image:url('https://source.unsplash.com/00JuluDEK5w/');"></span>
+          <div class="wrap">
+            <h1 class="text-landing">Problemas do mundo mobile</h1>
+          </div>
+        </section>
+
+        <section class="aligncenter">
+          <div class="wrap">
+            <h2><strong>SuperGraph</strong></h2>
+            <h3>Projeto interno do Facebook</h3>
+          </div>
+        </section>
+
+        <section class="aligncenter">
+          <span class="background-right-top" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/GraphQL_Logo.svg/2000px-GraphQL_Logo.svg.png'); background-size: 200px"></span>
+          <div class="wrap">
+            <h2><strong>GraphQL</strong></h2>
+            <h3>Em 2015 o projeto se torna Open Source</h3>
+          </div>
+        </section>
+
+        <section class="aligncenter">
+          <div class="wrap">
+            <h2><strong>Exemplo</strong></h2>
+            <h3>Do REST</h3>
+          </div>
+        </section>
+
+        <section class="aligncenter">
+          <span class="background" style="background-image:url('static/images/tudo-delicioso.png'); background-size: contain"></span>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+GET /recipes
+POST /recipes
+GET /recipes/{id}
+GET /authors
+GET /authors/{id}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "Torta de Legumes",
+      "category": "salgado",
+      "author": {
+        "id": 9,
+        "name": "Paulo Panela"
+      },
+      "ingredients": [
+        "500mg de Farinha",
+        "Sal",
+        "Fermento",
+        ...
+      ],
+      "steps": [
+        {
+            "description": "Junte a farinha com o sal, fermento..."
+        },
+        {
+            "description": "Misture bem..."
+        },
+        ...
+      ]
+    }
+  ]
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+POST /graphql
+            </code>
+          </pre>
+        </section>
+
+        <section class="aligncenter">
+          <div class="wrap">
+            <h2><strong>GraphQL Schema Language (SDL/IDL)</strong></h2>
+            <h3>Ei cliente, pode me pedir isso que eu sei responder</h3>
+          </div>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+type Query {
+  "Lista de receitas"
+  recipes: [Recipe]
+}
+
+type Recipe {
+  "Identificador único da receita"
+  id: ID!
+  "Nome da receita"
+  name: String!
+  "Categoria da receita"
+  category: Category!
+  "Lista de autores da receita"
+  author: [Author]!
+  "Lista de ingredientes da receita"
+  ingredients: [String]!
+  "Lista de passos da receita"
+  steps: [Step]!
+}
+
+type Author {
+  "Identificador único do autor"
+  id: ID!
+  "Nome do autor"
+  name: String!
+  "URL da foto do autor"
+  photo: String
+  "Lista de autores amigos do autor"
+  friends: [Author]
+}
+
+type Step {
+  "Descrição do passo"
+  description: String!
+}
+
+enum Category {
+  salgado
+  doce
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <div class="wrap">
+            <ul class="description">
+              <li><span class="text-label">Int:</span> Número inteiro de 32-bit (com sinal)</li>
+              <li><span class="text-label">Float:</span> Número de precisão dupla (com sinal)</li>
+              <li><span class="text-label">String:</span> Sequência de caracteres em UTF-8</li>
+              <li><span class="text-label">Boolean:</span> true ou false</li>
+              <li><span class="text-label">ID:</span> Representa um identificador único. Internamente, é como o tipo String, e recomenda-se que não seja "human readable"</li>
+              <li><span class="text-label">enum:</span> Restringe os valores de um campo para os presentes numa lista.</li>
+              <li><span class="text-label">[] (array):</span> Um array de objetos ou tipos escalares</li>
+              <li><span class="text-label">! (não nulo):</span> Define que o campo nunca será nulo</li>
+            </ul>
+          </div>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+{
+  "query": "...",
+  "operationName": "...",
+  "variables": { "myVariable": "someValue", ... }
+}
+            </code>
+          </pre>
+        </section>
+
+        <section class="aligncenter">
+          <div class="wrap">
+            <h2><strong>GraphQL Query Language</strong></h2>
+            <h3>Ei API, preciso disso</h3>
+          </div>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+{
+  recipes {
+    id
+    name
+    category
+    author {
+      name
+      photo
+    }
+  }
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+{
+  "data": {
+    "recipes": [
+      {
+        "id": "MQ==",
+        "name": "Torta de Legumes",
+        "category": "salgado",
+        "author": {
+          "name": "Paulo Panela",
+          "photo": "https://photo.co"
+        }
+      },
+      ...
+    ]
+  }
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <div class="wrap">
+            <h3>Arguments</h3>
+            <pre>
+              <code>
+type Query {
+  recipes(id: ID, byMe: Boolean, byFriends: Boolean): [Recipe]
+}
+              </code>
+            </pre>
+            <pre>
+              <code>
+{
+  recipes(id: "MQ==") {
+    id
+    name
+    ingredients
+    steps
+    author {
+      name
+    }
+  }
+}
+              </code>
+            </pre>
+          </div>
+        </section>
+
+        <section>
+          <div class="wrap">
+            <h3>Aliases e Fragments</h3>
+            <pre>
+              <code>
+{
+  recipesByMe: recipes(byMe: true) {
+    ...commonFields
+  }
+  recipesByFriends: recipes(byFriends: true) {
+    ...commonFields
+    author {
+      name
+    }
+  }
+}
+
+fragment commonFields on Recipe {
+  id
+  name
+}
+              </code>
+            </pre>
+          </div>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+{
+  "data": {
+    "recipesByMe": [
+      {
+        "id": "MQ==",
+        "name": "Torta de Legumes"
+      },
+      ...
+    ],
+    "recipesByFriends": [
+      {
+        "id": "MjA==",
+        "name": "Pudim de Chocolate",
+        "author": {
+          "name": "Roberta Sweet",
+        }
+      },
+      ...
+    ],
+  }
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+type Query {
+  recipes(id: ID, byMe: Boolean, byFriends: Boolean): [Recipe]
+  authors(name: String, showFriends: Boolean): [Author]
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <div class="wrap">
+            <div class="card-60 bg-white">
+              <figure>
+                <pre>
+                  <code>
+{
+  "query": "
+query ListOfAuthors($name: String) {
+  authors(name: $name) {
+    id
+    name
+    photo
+  }
+}
+",
+  "variables": { "name": "Jorge" }
+}
+                  </code>
+                </pre>
+              </figure>
+              <div class="flex-content">
+                <h2>
+                  Variables
+                </h2>
+                <p>Não é uma boa prática colocar campos que são preenchidos pelo usuário diretamente na query, precisamos passá-los como variáveis. Para isso, na definição da query colocamos o nome das variáveis (com "$" antes) e o tipo de cada uma.</p>
+                <p>O valor das variáveis é definido no campo "variables" do request.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="wrap">
+            <div class="card-60 bg-white">
+              <figure>
+                <pre>
+                  <code>
+{
+  "query": "
+query ListOfAuthors($name: String, $withFriends: Boolean!) {
+  authors(name: $name) {
+    id
+    name
+    photo
+    friends @include(if: $withFriends) {
+      name
+    }
+  }
+}
+",
+  "variables": { "name": "Jorge", "withFriends": true }
+}
+                  </code>
+                </pre>
+              </figure>
+              <div class="flex-content">
+                <h2>
+                  Directives
+                </h2>
+                <p>Precisamos que alguns campos sejam incluídos na resposta seguindo uma condição. Esse recurso se chama "Directives", e possui duas opções:<br><br>"@include(if: Boolean)" para incluir um campo caso uma variável seja verdadeira.<br><br>"@skip(if: Boolean)" para não incluir caso uma variável seja verdadeira.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="aligncenter">
+          <div class="wrap">
+            <h2><strong>Mutation</strong></h2>
+            <h3>Ei API, muda isso</h3>
+          </div>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// Schema
+input CreateRecipeInput {
+  name: String!
+  ingredients: [String]!
+  steps: [String]!
+}
+
+type CreateRecipePayload {
+  recipe: Recipe
+}
+
+type Mutation {
+  createRecipe(recipe: CreateRecipeInput!): CreateRecipePayload
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <div class="wrap">
+            <div class="card-50">
+              <blockquote>
+                <p>&ldquo;Uma boa prática é criar um objeto do tipo input, o qual agrupa todos os campos de entrada da mutation, deixando mais simples o uso com variáveis.&rdquo;</p>
+                <p><cite>Leonardo da Vinci</cite></p>
+              </blockquote>
+              <figure><img src="http://res.publicdomainfiles.com/pdf_view/68/13927297815225.png" alt="Leonardo da Vinci" width="300"></figure>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="wrap">
+            <div class="card-50">
+              <blockquote>
+                <p>&ldquo;Outra boa prática é ter um objeto que representa a resposta da mutation (payload), o qual poderá ser reutilizado por outras mutations (imagine uma mutation de atualização, o payload seria o mesmo que a de criação).&rdquo;</p>
+                <p><cite>Albert Einsten</cite></p>
+              </blockquote>
+              <figure><img src="https://publicdomainvectors.org/photos/albert-einstein.png" alt="Albert Einsten" width="300"></figure>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// Query              
+mutation CreateRecipe($input: CreateRecipeInput!) {
+  createRecipe(recipe: $input) {
+    recipe {
+      id
+    }
+  }
+}
+
+// Variables
+{
+  "input": {
+    "name": "Bolo de Fubá",
+    "ingredients": [
+      "Farinha de Fubá",
+      ...
+    ],
+    "steps": [
+      "Misture os ingredientes secos",
+      ...
+    ]
+  }
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+{
+  "data": {
+    "createRecipe": {
+      "recipe": {
+        "id": "MTAw"
+      }
+    }
+  }
+}
+            </code>
+          </pre>
+        </section>
+
+        <section class="aligncenter">
+          <div class="wrap">
+            <h2><strong>Authorization</strong></h2>
+            <h3>Ei API, quero ver isso</h3>
+          </div>
+        </section>
+
+        <section>
+          <div class="aligncenter">
+            <h2>Autorização fica na camada de regras de negócio</h2>
+            <p>Vulgo: Esse trabalho não é meu!</p>
+          </div>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+// Query
+{
+  semPermissao: recipes(id: "MQ==") {
+    name
+  }
+  comPermissao: recipes(id: "Mg==") {
+    name
+  }
+}
+
+// Response
+{
+  "data": {
+    "semPermissao": null,
+    "comPermissao": {
+      "name": "Torta de Legumes",
+    }
+  }
+}
+            </code>
+          </pre>
+        </section>
+
+        <section class="aligncenter">
+          <div class="wrap">
+            <h2><strong>Pagination</strong></h2>
+            <h3>Ei API, página 2, por favor</h3>
+          </div>
+        </section>
+
+        <section>
+          <div class="wrap">
+            <div class="content-left">
+              <pre>
+                <code>
+{
+  recipes(first:2 after:"Mg==") {
+    totalCount
+    edges {
+      cursor
+      node {
+        name
+        category
+        author {
+          name
+          photo
+        }
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+                </code>
+              </pre>
+            </div>
+            <div class="content-left">
+              <ul class="text-cols">
+                <li><strong>first e after</strong>: Especifica que queremos os N primeiros registros, após o registro com um determinado ID.</li>
+                <li><strong>totalCount</strong>: Quantidade total de registros encontrados (por exemplo, 199 receitas).</li>
+                <li><strong>edges</strong>: Em um grafo, edges são as arestas que conectam um nó a outro. No nosso exemplo, não tem muita utilidade, mas em casos como relacionamentos ("lista de amigos"), pode ser útil para trazer dados sobre o relacionamento (a data que duas pessoas se tornaram amigas, por exemplo)</li>
+                <li><strong>cursor</strong>: É um identificador único da aresta. Normalmente, é a posição do item na lista (ex: 21) ou o ID (ex: "Mq=="). No nosso caso, uma possível implementação seria utilizar o ID da receita culinária.</li>
+                <li><strong>node</strong>: É o nó, ou no nosso caso, a receita culinária.</li>
+                <li><strong>pageInfo</strong>: Um objeto de auxílio a paginação. No exemplo, endCursor seria o último cursor da página (para facilitar pedir a próxima página), e hasNextPage um booleano que nos dirá se existe uma próxima página.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="aligncenter">
+          <div class="wrap">
+            <h2><strong>Error Handling</strong></h2>
+            <h3>Ei cliente, não entendi o que você disse</h3>
+          </div>
+        </section>
+
+        <section>
+          <pre>
+            <code>
+{
+  "errors": [
+    {
+      "message": "Não foi possível excluir o objeto"
+    }
+  ]
+}
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <span class="background-right-bottom" style="background-image:url('https://www.maxpixel.net/static/photo/1x/Toolbox-Handyman-Construction-Tools-Builder-3411589.png'); background-size: 300px"></span>
+          <div class="wrap">
+            <div class="content-left">
+              <h3>Ferramentas</h3>
+
+              <ul class="flexblock specs">
+                <li>
+                  <div>
+                    <h2><a href="https://github.com/graphql/graphiql" target="_blank">GraphiQL</a></h2>
+                    An in-browser IDE for exploring GraphQL
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <h2><a href="https://github.com/prismagraphql/graphql-playground" target="_blank">GraphQL Playground</a></h2>
+                    GraphQL IDE for better development workflows
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <h2><a href="https://www.apollographql.com/" target="_blank">APOLLO</a></h2>
+                    Build a universal GraphQL API on top of your existing REST APIs
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <h2><a href="https://facebook.github.io/relay/" target="_blank">Relay</a></h2>
+                    A JavaScript framework for building data-driven React applications
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <h2><a href="https://graphql-docs.com" target="_blank">GraphQL Docs</a></h2>
+                    Generated auto-magically docs based on GraphQL API URL
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- .end .wrap -->
+        </section>
+
+        <section class="fullscreen">
+          <div class="card-50">
+            <figure>
+              <img src="https://source.unsplash.com/UJAdp8d_sek/">
+            </figure>
+            <div class="flex-content">
+              <h2>Nem tudo são flores</h2>
+              <p>GraphQL também tem seus problemas</p>
+              <p class="text-intro">Caching: Ferramentas de cache HTTP não funcionam para o GraphQL</p>
+              <p class="text-intro">Upload de arquivos: Oficialmente, não suporta, mas tem especificações "paralelas" (<a href="https://github.com/jaydenseric/graphql-multipart-request-spec" target="_blank">multipart form field</a>)</p>
+              <p class="text-intro">Uso: Como tem muita gente que não conhece, pode tornar o adoção da sua API mais difícil</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide-top">
+          <span class="background" style="background-image:url('https://source.unsplash.com/E0UKvm8rb8Q/');"></span>
+          <div class="wrap content-center">
+            <h1>Muito obrigado <svg class="fa-heart"><use xlink:href="#fa-heart"></use></svg></h1>
+            <p><a href="https://github.com/gabrielrcouto" target="_blank" style="color: black;"><svg class="fa-github"><use xlink:href="#fa-github"></use></svg>gabrielrcouto</a> - <a href="https://github.com/memeddev" target="_blank" style="color: black;"><svg class="fa-github"><use xlink:href="#fa-github"></use></svg>memeddev</a><br><a href="https://twitter.com/gabrielrcouto" target="_blank" style="color: black;"><svg class="fa-twitter"><use xlink:href="#fa-twitter"></use></svg>@gabrielrcouto</a><br><a href="https://phpsp.org.br" target="_blank" style="color: black;">phpsp.org.br</a></p>
+          </div>
+        </section>
+
+      </article>
+    </main>
+
+    <script src="static/js/webslides.min.js"></script>
+    <script src="static/js/asciinema-player.js"></script>
+
+    <script>
+      window.ws = new WebSlides();
+
+      function verifyAsciinema() {
+        let currentSlide = ws.currentSlide_.el;
+        let dataAsciinema = currentSlide.attributes['data-asciinema'];
+
+        if (dataAsciinema && currentSlide.getElementsByClassName('asciinema-player-wrapper').length === 0) {
+          asciinema.player.js.CreatePlayer(
+            currentSlide,
+            dataAsciinema.nodeValue,
+            {
+              'autoPlay': true,
+              'preload': true,
+              'fontSize': 'big',
+              'height': 20,
+              'width': 100
+            }
+          );
+        }
+      }
+
+      ws.el.addEventListener('ws:slide-change', () => {
+        verifyAsciinema();
+      });
+    </script>
+
+    <script defer src="static/js/svg-icons.js"></script>
+  </body>
+</html>

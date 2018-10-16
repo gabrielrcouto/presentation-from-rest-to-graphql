@@ -1,0 +1,3 @@
+#!/bin/bash
+# Example:
+# ./node_modules/.bin/mmdc -i diagrams/nginx-php-fpm.mmd -o static/images/nginx-php-fpm.svg
