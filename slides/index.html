@@ -24,6 +24,9 @@
     <!-- ASCIINEMA Player -->
     <link rel="stylesheet" type="text/css" href="static/css/asciinema-player.css">
 
+    <!-- Prism -->
+    <link rel="stylesheet" type='text/css' media='all' href="static/css/prism.css">
+
     <style type="text/css">
       section.asciinema {
         background-color: #121314;
@@ -48,6 +51,15 @@
         width: auto;
         word-wrap: break-word;
       }
+
+      div.card-60.bg-white figure {
+        background-color: #2d2d2d;
+      }
+
+      div.card-60 pre {
+        border: none;
+        box-shadow: none;
+      }
     </style>
   </head>
   <body>
@@ -60,6 +72,7 @@
             <figure><img src="https://www.conexaokinghost.com.br/wp-content/uploads/2018/08/logo-conexao-kinghost.png" style="padding-bottom: 100px;" /></figure>
             <h2 class="text-landing" style="text-shadow: none;"><span style="background-color: #f4bc0e; padding-left: 15px;">Do REST ao GraphQL</span></h2>
             <p class="text-intro" style="text-shadow: none;">Gabriel Couto, CTO da Memed</p>
+            <p class="bg-purple">Me mande um <svg class="fa-twitter"><use xlink:href="#fa-twitter"></use></svg> tweet: @gabrielrcouto #ConexaoKingHost</p>
           </div>
         </section>
 
@@ -68,6 +81,7 @@
             <h2>Essa apresentação é <strong>Open Source <svg class="fa-heart"><use xlink:href="#fa-heart"></use></svg></strong></h2>
             <h3>Sinta-se livre para baixá-la, modificá-la e distribuí-la</h3>
             <h4><a href="https://github.com/gabrielrcouto/presentation-from-rest-to-graphql" target="_blank" style="color: black;"><svg class="fa-github"><use xlink:href="#fa-github"></use></svg> gabrielrcouto/presentation-from-rest-to-graphql</a></h4>
+            <h4><a href="http://bit.ly/palestra-graphql" target="_blank" style="color: black;">http://bit.ly/palestra-graphql</a></h4>
           </div>
         </section>
 
@@ -128,21 +142,15 @@
         </section>
 
         <section>
-          <pre>
-            <code>
-GET /recipes
+          <pre><code>GET /recipes
 POST /recipes
 GET /recipes/{id}
 GET /authors
-GET /authors/{id}
-            </code>
-          </pre>
+GET /authors/{id}</code></pre>
         </section>
 
         <section>
-          <pre>
-            <code>
-{
+          <pre><code class="language-json">{
   "data": [
     {
       "id": 1,
@@ -169,17 +177,11 @@ GET /authors/{id}
       ]
     }
   ]
-}
-            </code>
-          </pre>
+}</code></pre>
         </section>
 
         <section>
-          <pre>
-            <code>
-POST /graphql
-            </code>
-          </pre>
+          <pre><code>POST /graphql</code></pre>
         </section>
 
         <section class="aligncenter">
@@ -190,9 +192,10 @@ POST /graphql
         </section>
 
         <section>
-          <pre>
-            <code>
-type Query {
+          <div class="wrap">
+            <div class="grid">
+              <div class="column">
+                <pre><code class="language-graphql">type Query {
   "Lista de receitas"
   recipes: [Recipe]
 }
@@ -210,9 +213,10 @@ type Recipe {
   ingredients: [String]!
   "Lista de passos da receita"
   steps: [Step]!
-}
-
-type Author {
+}</code></pre>
+              </div>
+              <div class="column">              
+                <pre><code class="language-graphql">type Author {
   "Identificador único do autor"
   id: ID!
   "Nome do autor"
@@ -231,9 +235,10 @@ type Step {
 enum Category {
   salgado
   doce
-}
-            </code>
-          </pre>
+}</code></pre>
+              </div>
+            </div>
+          </div>
         </section>
 
         <section>
@@ -251,18 +256,6 @@ enum Category {
           </div>
         </section>
 
-        <section>
-          <pre>
-            <code>
-{
-  "query": "...",
-  "operationName": "...",
-  "variables": { "myVariable": "someValue", ... }
-}
-            </code>
-          </pre>
-        </section>
-
         <section class="aligncenter">
           <div class="wrap">
             <h2><strong>GraphQL Query Language</strong></h2>
@@ -271,9 +264,11 @@ enum Category {
         </section>
 
         <section>
-          <pre>
-            <code>
-{
+          <div class="wrap">
+            <div class="grid">
+              <div class="column">
+                <h3>Query</h3>
+                <pre><code class="language-graphql">{
   recipes {
     id
     name
@@ -283,15 +278,11 @@ enum Category {
       photo
     }
   }
-}
-            </code>
-          </pre>
-        </section>
-
-        <section>
-          <pre>
-            <code>
-{
+}</code></pre>
+              </div>
+              <div class="column">
+                <h3>Response</h3>
+                <pre><code class="language-json">{
   "data": {
     "recipes": [
       {
@@ -306,24 +297,28 @@ enum Category {
       ...
     ]
   }
-}
-            </code>
-          </pre>
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3>Estrutura do Request</h3>
+          <pre><code class="language-json">{
+  "query": "...",
+  "operationName": "...",
+  "variables": { "myVariable": "someValue", ... }
+}</code></pre>
         </section>
 
         <section>
           <div class="wrap">
             <h3>Arguments</h3>
-            <pre>
-              <code>
-type Query {
+            <pre><code class="language-graphql">type Query {
   recipes(id: ID, byMe: Boolean, byFriends: Boolean): [Recipe]
-}
-              </code>
-            </pre>
-            <pre>
-              <code>
-{
+}</code></pre>
+            <pre><code class="language-graphql">{
   recipes(id: "MQ==") {
     id
     name
@@ -333,18 +328,16 @@ type Query {
       name
     }
   }
-}
-              </code>
-            </pre>
+}</code></pre>
           </div>
         </section>
 
         <section>
           <div class="wrap">
             <h3>Aliases e Fragments</h3>
-            <pre>
-              <code>
-{
+            <div class="grid">
+              <div class="column">
+                <pre><code class="language-graphql">{
   recipesByMe: recipes(byMe: true) {
     ...commonFields
   }
@@ -359,16 +352,10 @@ type Query {
 fragment commonFields on Recipe {
   id
   name
-}
-              </code>
-            </pre>
-          </div>
-        </section>
-
-        <section>
-          <pre>
-            <code>
-{
+}</code></pre>
+              </div>
+              <div class="column">
+                <pre><code class="language-json">{
   "data": {
     "recipesByMe": [
       {
@@ -388,29 +375,17 @@ fragment commonFields on Recipe {
       ...
     ],
   }
-}
-            </code>
-          </pre>
-        </section>
-
-        <section>
-          <pre>
-            <code>
-type Query {
-  recipes(id: ID, byMe: Boolean, byFriends: Boolean): [Recipe]
-  authors(name: String, showFriends: Boolean): [Author]
-}
-            </code>
-          </pre>
+}</code></pre>
+              </div>
+            </div>
+          </div>
         </section>
 
         <section>
           <div class="wrap">
             <div class="card-60 bg-white">
               <figure>
-                <pre>
-                  <code>
-{
+                <pre><code class="language-json">{
   "query": "
 query ListOfAuthors($name: String) {
   authors(name: $name) {
@@ -421,9 +396,7 @@ query ListOfAuthors($name: String) {
 }
 ",
   "variables": { "name": "Jorge" }
-}
-                  </code>
-                </pre>
+}</code></pre>
               </figure>
               <div class="flex-content">
                 <h2>
@@ -440,9 +413,7 @@ query ListOfAuthors($name: String) {
           <div class="wrap">
             <div class="card-60 bg-white">
               <figure>
-                <pre>
-                  <code>
-{
+                <pre><code class="language-json">{
   "query": "
 query ListOfAuthors($name: String, $withFriends: Boolean!) {
   authors(name: $name) {
@@ -456,9 +427,7 @@ query ListOfAuthors($name: String, $withFriends: Boolean!) {
 }
 ",
   "variables": { "name": "Jorge", "withFriends": true }
-}
-                  </code>
-                </pre>
+}</code></pre>
               </figure>
               <div class="flex-content">
                 <h2>
@@ -478,10 +447,8 @@ query ListOfAuthors($name: String, $withFriends: Boolean!) {
         </section>
 
         <section>
-          <pre>
-            <code>
-// Schema
-input CreateRecipeInput {
+          <h3>Schema</h3>
+          <pre><code class="language-graphql">input CreateRecipeInput {
   name: String!
   ingredients: [String]!
   steps: [String]!
@@ -493,9 +460,7 @@ type CreateRecipePayload {
 
 type Mutation {
   createRecipe(recipe: CreateRecipeInput!): CreateRecipePayload
-}
-            </code>
-          </pre>
+}</code></pre>
         </section>
 
         <section>
@@ -523,19 +488,19 @@ type Mutation {
         </section>
 
         <section>
-          <pre>
-            <code>
-// Query              
-mutation CreateRecipe($input: CreateRecipeInput!) {
+          <div class="wrap">
+            <div class="grid">
+              <div class="column">
+                <h3>Query</h3>
+                <pre><code class="language-graphql">mutation CreateRecipe($input: CreateRecipeInput!) {
   createRecipe(recipe: $input) {
     recipe {
       id
     }
   }
-}
-
-// Variables
-{
+}</code></pre>
+                <h3>Variables</h3>
+                <pre><code class="language-json">{
   "input": {
     "name": "Bolo de Fubá",
     "ingredients": [
@@ -547,15 +512,11 @@ mutation CreateRecipe($input: CreateRecipeInput!) {
       ...
     ]
   }
-}
-            </code>
-          </pre>
-        </section>
-
-        <section>
-          <pre>
-            <code>
-{
+}</code></pre>
+              </div>
+              <div class="column">
+                <h3>Response</h3>
+                <pre><code class="language-json">{
   "data": {
     "createRecipe": {
       "recipe": {
@@ -563,9 +524,10 @@ mutation CreateRecipe($input: CreateRecipeInput!) {
       }
     }
   }
-}
-            </code>
-          </pre>
+}</code></pre>
+              </div>
+            </div>
+          </div>
         </section>
 
         <section class="aligncenter">
@@ -578,34 +540,37 @@ mutation CreateRecipe($input: CreateRecipeInput!) {
         <section>
           <div class="aligncenter">
             <h2>Autorização fica na camada de regras de negócio</h2>
-            <p>Vulgo: Esse trabalho não é meu!</p>
+            <p>Vulgo: Toma que o trabalho é seu!</p>
           </div>
         </section>
 
         <section>
-          <pre>
-            <code>
-// Query
-{
+          <div class="wrap">
+            <div class="grid">
+              <div class="column">
+                <h3>Query</h3>
+                <pre><code class="language-graphql">{
   semPermissao: recipes(id: "MQ==") {
     name
   }
   comPermissao: recipes(id: "Mg==") {
     name
   }
-}
-
-// Response
-{
+}</code></pre>
+              </div>
+              <div class="column">
+                <h3>Response</h3>
+                <pre><code class="language-graphql">{
   "data": {
     "semPermissao": null,
     "comPermissao": {
       "name": "Torta de Legumes",
     }
   }
-}
-            </code>
-          </pre>
+}</code></pre>
+              </div>
+            </div>
+          </div>
         </section>
 
         <section class="aligncenter">
@@ -618,9 +583,7 @@ mutation CreateRecipe($input: CreateRecipeInput!) {
         <section>
           <div class="wrap">
             <div class="content-left">
-              <pre>
-                <code>
-{
+              <pre><code class="language-graphql">{
   recipes(first:2 after:"Mg==") {
     totalCount
     edges {
@@ -639,9 +602,7 @@ mutation CreateRecipe($input: CreateRecipeInput!) {
       hasNextPage
     }
   }
-}
-                </code>
-              </pre>
+}</code></pre>
             </div>
             <div class="content-left">
               <ul class="text-cols">
@@ -664,17 +625,13 @@ mutation CreateRecipe($input: CreateRecipeInput!) {
         </section>
 
         <section>
-          <pre>
-            <code>
-{
+          <pre><code class="language-json">{
   "errors": [
     {
       "message": "Não foi possível excluir o objeto"
     }
   ]
-}
-            </code>
-          </pre>
+}</code></pre>
         </section>
 
         <section>
@@ -740,6 +697,7 @@ mutation CreateRecipe($input: CreateRecipeInput!) {
           <div class="wrap content-center">
             <h1>Muito obrigado <svg class="fa-heart"><use xlink:href="#fa-heart"></use></svg></h1>
             <p><a href="https://github.com/gabrielrcouto" target="_blank" style="color: black;"><svg class="fa-github"><use xlink:href="#fa-github"></use></svg>gabrielrcouto</a> - <a href="https://github.com/memeddev" target="_blank" style="color: black;"><svg class="fa-github"><use xlink:href="#fa-github"></use></svg>memeddev</a><br><a href="https://twitter.com/gabrielrcouto" target="_blank" style="color: black;"><svg class="fa-twitter"><use xlink:href="#fa-twitter"></use></svg>@gabrielrcouto</a><br><a href="https://phpsp.org.br" target="_blank" style="color: black;">phpsp.org.br</a></p>
+            <h3>#vaiMemed</h3>
           </div>
         </section>
 
@@ -748,6 +706,7 @@ mutation CreateRecipe($input: CreateRecipeInput!) {
 
     <script src="static/js/webslides.min.js"></script>
     <script src="static/js/asciinema-player.js"></script>
+    <script src="static/js/prism.js"></script>
 
     <script>
       window.ws = new WebSlides();

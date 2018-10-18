@@ -10,6 +10,16 @@ This presentation is Open Source \o/ Feel free to modify and present it on any e
 ## Presented at
 - [Conexão KingHost 2018](https://www.conexaokinghost.com.br/)
 
+## Example
+
+To start the server:
+
+```sh
+cd apollo-example
+npm install
+node index.js
+```
+
 ## License
 This project contains open source third-party software, with licenses explicited on [NOTICE](NOTICE) file.
 
