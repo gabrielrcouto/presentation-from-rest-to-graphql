@@ -97,8 +97,8 @@ const resolvers = {
       return {
         recipe: {
           id: Math.random().toString(36).substring(2, 6),
-          name: _args.name,
-          steps: _args.steps
+          name: _args.recipe.name,
+          steps: _args.recipe.steps.map((item) => { return {description: item}})
         }
       }
     }

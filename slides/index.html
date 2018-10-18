@@ -96,7 +96,7 @@
           <span class="background-right-top" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Facebook_logo_%28square%29.png/600px-Facebook_logo_%28square%29.png'); background-size: 200px"></span>
           <div class="wrap">
             <h1 class="text-landing">2012</h1>
-            <p class="text-intro">O time do Facebook precisava de uma API do o News Feed para o novo aplicativo nativo mobile.<br>A API antiga respondia em HTML.</p>
+            <p class="text-intro">O time do Facebook precisava de uma API do News Feed para o novo aplicativo nativo mobile.<br>A API antiga respondia em HTML.</p>
           </div>
         </section>
 
@@ -584,7 +584,7 @@ type Mutation {
           <div class="wrap">
             <div class="content-left">
               <pre><code class="language-graphql">{
-  recipes(first:2 after:"Mg==") {
+  recipes(first:2, after:"Mg==") {
     totalCount
     edges {
       cursor
@@ -632,6 +632,26 @@ type Mutation {
     }
   ]
 }</code></pre>
+        </section>
+
+        <section class="aligncenter">
+          <div class="wrap">
+            <h2><strong>Mas eu tenho uma API em REST</strong></h2>
+            <h3>E agora?</h3>
+          </div>
+        </section>
+
+        <section class="aligncenter">
+          <div class="wrap">
+            <h2><strong>APOLLO RestDataSource</strong></h2>
+            <p><a href="https://www.apollographql.com/docs/apollo-server/features/data-sources.html" target="_blank">https://www.apollographql.com/docs/apollo-server/features/data-sources.html</a></p>
+          </div>
+        </section>
+
+        <section class="aligncenter">
+          <div class="wrap">
+            <h2><strong>E no Front-end, como faz?</strong></h2>
+          </div>
         </section>
 
         <section>
